@@ -1,0 +1,965 @@
+/* Imashi Components Styles */
+
+/* Common Variables */
+:root {
+  --imashi-primary: #2196F3;
+  --imashi-secondary: #1976D2;
+  --imashi-success: #4CAF50;
+  --imashi-danger: #f44336;
+  --imashi-warning: #ff9800;
+  --imashi-text: #333;
+  --imashi-light-gray: #f5f5f5;
+  --imashi-border: #ddd;
+  --imashi-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --imashi-shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Layout */
+.imashi-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+}
+
+.imashi-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+/* Header Styles */
+.imashi-header {
+  margin-bottom: 2rem;
+}
+
+.imashi-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.imashi-header-content h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.imashi-header-icon {
+  color: var(--imashi-primary);
+}
+
+/* Form Styles */
+.imashi-form {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.imashi-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, var(--imashi-primary), var(--imashi-secondary));
+}
+
+.imashi-form-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.imashi-form-subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.imashi-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.imashi-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.imashi-form-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--imashi-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.imashi-form-input:focus {
+  outline: none;
+  border-color: var(--imashi-primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+}
+
+.imashi-form-input::placeholder {
+  color: #adb5bd;
+}
+
+/* Button Styles */
+.imashi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.imashi-btn-primary {
+  background: linear-gradient(135deg, var(--imashi-primary), var(--imashi-secondary));
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+}
+
+.imashi-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3);
+}
+
+.imashi-btn-secondary {
+  background: white;
+  color: var(--imashi-primary);
+  border: 2px solid var(--imashi-primary);
+}
+
+.imashi-btn-secondary:hover {
+  background: var(--imashi-primary);
+  color: white;
+}
+
+.imashi-btn-danger {
+  background: white;
+  color: var(--imashi-danger);
+  border: 2px solid var(--imashi-danger);
+}
+
+.imashi-btn-danger:hover {
+  background: var(--imashi-danger);
+  color: white;
+}
+
+.imashi-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Card Styles */
+.imashi-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--imashi-shadow);
+  transition: all 0.3s ease;
+}
+
+.imashi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--imashi-shadow-hover);
+}
+
+/* Table Styles */
+.imashi-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1rem 0;
+}
+
+.imashi-table th {
+  background: #f8f9fa;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid var(--imashi-border);
+}
+
+.imashi-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--imashi-border);
+  color: #666;
+}
+
+.imashi-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* Status Badge Styles */
+.imashi-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.imashi-badge-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.imashi-badge-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.imashi-badge-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Message Styles */
+.imashi-message {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.imashi-message-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.imashi-message-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Loading State */
+.imashi-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.imashi-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--imashi-light-gray);
+  border-top: 4px solid var(--imashi-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .imashi-container {
+    padding: 1rem;
+  }
+
+  .imashi-form {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .imashi-form-title {
+    font-size: 1.8rem;
+  }
+
+  .imashi-form-subtitle {
+    font-size: 1rem;
+  }
+
+  .imashi-btn {
+    width: 100%;
+  }
+
+  .imashi-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .imashi-table th,
+  .imashi-table td {
+    padding: 0.8rem;
+  }
+}
+
+/* Navigation Styles */
+.imashi-nav {
+  background: white;
+  padding: 1rem 2rem;
+  box-shadow: var(--imashi-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.imashi-nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.imashi-nav-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--imashi-primary);
+  text-decoration: none;
+}
+
+.imashi-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.imashi-nav-link {
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.imashi-nav-link:hover {
+  color: var(--imashi-primary);
+}
+
+/* User Details Styles */
+.imashi-user-details {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--imashi-shadow);
+}
+
+.imashi-user-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--imashi-light-gray);
+}
+
+.imashi-user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--imashi-light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--imashi-primary);
+}
+
+.imashi-user-info {
+  flex: 1;
+}
+
+.imashi-user-name {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.imashi-user-role {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.imashi-user-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.imashi-detail-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.imashi-detail-label {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.imashi-detail-value {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+/* Users Grid Styles */
+.imashi-users-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.imashi-user-card-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+  transition: all 0.3s ease;
+}
+
+.imashi-user-card-wrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--imashi-shadow-hover);
+}
+
+.imashi-no-users {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+}
+
+.imashi-no-users svg {
+  font-size: 3rem;
+  color: var(--imashi-primary);
+  margin-bottom: 1rem;
+}
+
+.imashi-no-users p {
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Clickable Row Styles */
+.imashi-clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.imashi-clickable-row:hover {
+  background-color: var(--imashi-bg-hover);
+}
+
+/* Enhanced Modal Styles */
+.imashi-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.imashi-modal-content {
+  background: white;
+  border-radius: 12px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.imashi-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--imashi-border);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.imashi-modal-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.imashi-modal-body {
+  padding: 1.5rem;
+}
+
+.imashi-modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--imashi-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.imashi-product-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.imashi-detail-item {
+  background: var(--imashi-bg-light);
+  padding: 1.2rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.imashi-detail-item:hover {
+  transform: translateY(-2px);
+}
+
+.imashi-detail-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--imashi-text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.imashi-detail-value {
+  color: var(--imashi-text-primary);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Responsive Modal Adjustments */
+@media (max-width: 768px) {
+  .imashi-modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+
+  .imashi-product-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .imashi-modal-footer {
+    flex-direction: column;
+  }
+
+  .imashi-modal-footer .imashi-btn {
+    width: 100%;
+  }
+}
+
+/* Dashboard Header */
+.imashi-dashboard-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Stats Grid */
+.imashi-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.imashi-stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--imashi-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.imashi-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--imashi-shadow-md);
+}
+
+.imashi-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--imashi-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.imashi-stat-content h3 {
+  font-size: 0.875rem;
+  color: var(--imashi-text-secondary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.imashi-stat-content p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--imashi-text-primary);
+  margin: 0.25rem 0 0;
+}
+
+/* Sortable Table Headers */
+.imashi-sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 1.5rem !important;
+}
+
+.imashi-sortable:hover {
+  background-color: var(--imashi-bg-hover);
+}
+
+.imashi-sortable svg {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--imashi-text-secondary);
+  font-size: 0.875rem;
+}
+
+.imashi-sortable:hover svg {
+  color: var(--imashi-primary);
+}
+
+/* Enhanced Table Styles */
+.imashi-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.imashi-table th {
+  background-color: var(--imashi-bg-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+  border-bottom: 2px solid var(--imashi-border-color);
+}
+
+.imashi-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--imashi-border-color);
+  transition: background-color 0.2s ease;
+}
+
+.imashi-table tbody tr:hover {
+  background-color: var(--imashi-bg-hover);
+}
+
+.imashi-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .imashi-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .imashi-stat-card {
+    padding: 1rem;
+  }
+
+  .imashi-stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .imashi-stat-content h3 {
+    font-size: 0.75rem;
+  }
+
+  .imashi-stat-content p {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .imashi-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section Styles */
+.imashi-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.imashi-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.imashi-section-header h2 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.imashi-search-box {
+  position: relative;
+}
+
+.imashi-search-input {
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 2px solid var(--imashi-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.imashi-search-input:focus {
+  outline: none;
+  border-color: var(--imashi-primary);
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+}
+
+/* User Card Styles */
+.imashi-user-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--imashi-shadow);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.imashi-user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--imashi-shadow-hover);
+}
+
+.imashi-user-card-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--imashi-border);
+}
+
+.imashi-user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--imashi-primary), var(--imashi-secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.imashi-user-info h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.imashi-user-role {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.imashi-user-details {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.imashi-user-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #666;
+}
+
+.imashi-user-detail svg {
+  color: var(--imashi-primary);
+}
+
+.imashi-user-actions {
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid var(--imashi-border);
+}
+
+.imashi-user-actions .imashi-btn {
+  flex: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .imashi-dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .imashi-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .imashi-section-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .imashi-search-input {
+    width: 100%;
+  }
+
+  .imashi-users-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .imashi-user-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1400px) {
+  .imashi-users-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.imashi-search-filter-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.imashi-search-box {
+  flex: 1;
+}
+
+.imashi-search-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.imashi-filter-box {
+  min-width: 200px;
+}
+
+.imashi-filter-select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.imashi-search-input:focus,
+.imashi-filter-select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.imashi-modal-content .leaflet-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imashi-modal-content .leaflet-popup-content {
+  margin: 10px;
+}
+
+.imashi-modal-content .leaflet-popup-content strong {
+  color: var(--imashi-primary);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.imashi-modal-content .leaflet-popup-content small {
+  color: #666;
+  font-size: 0.8em;
+} 

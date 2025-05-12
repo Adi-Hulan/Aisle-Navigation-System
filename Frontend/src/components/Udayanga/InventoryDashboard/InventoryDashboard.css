@@ -1,0 +1,362 @@
+.dashboard-page {
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px);
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header-content h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-icon {
+  color: #3498db;
+}
+
+.header-content p {
+  color: #666;
+  margin: 0;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.stat-icon.total {
+  background-color: #3498db;
+}
+
+.stat-icon.warning {
+  background-color: #f1c40f;
+}
+
+.stat-icon.danger {
+  background-color: #e74c3c;
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.stat-number {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Quick Actions */
+.quick-actions-section {
+  margin-bottom: 2rem;
+}
+
+.quick-actions-section h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn.add {
+  background-color: #2ecc71;
+}
+
+.action-btn.add:hover {
+  background-color: #27ae60;
+}
+
+.action-btn.receive {
+  background-color: #3498db;
+}
+
+.action-btn.receive:hover {
+  background-color: #2980b9;
+}
+
+.action-btn.reports {
+  background-color: #f1c40f;
+}
+
+.action-btn.reports:hover {
+  background-color: #f39c12;
+}
+
+/* Activity Log */
+.activity-log-section {
+  margin-bottom: 2rem;
+}
+
+.activity-log-section h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.activity-log-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-log-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.activity-log-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.activity-log-table th,
+.activity-log-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.activity-log-table th {
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+}
+
+.activity-log-table tr:last-child td {
+  border-bottom: none;
+}
+
+.action-cell {
+  text-transform: capitalize;
+}
+
+.timestamp-cell {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  color: #e74c3c;
+  text-align: center;
+  padding: 1rem;
+}
+
+.no-data {
+  color: #666;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Stock Status */
+.stock-status-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stock-status-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.status-number {
+  margin: 0.5rem 0 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.status-number.success {
+  color: #2ecc71;
+}
+
+.status-number.danger {
+  color: #e74c3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-status-section {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-log-table {
+    font-size: 0.9rem;
+  }
+}
+
+.supplier-request-form {
+    padding: 20px;
+}
+
+.supplier-request-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.supplier-request-form .form-group {
+    margin-bottom: 20px;
+}
+
+.supplier-request-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.supplier-request-form select,
+.supplier-request-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.supplier-request-form select:focus,
+.supplier-request-form input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.supplier-request-form .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.supplier-request-form .submit-btn,
+.supplier-request-form .cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.supplier-request-form .submit-btn {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.supplier-request-form .submit-btn:hover {
+    background-color: #357abd;
+}
+
+.supplier-request-form .submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.supplier-request-form .cancel-btn {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.supplier-request-form .cancel-btn:hover {
+    background-color: #e5e5e5;
+}
+
+.supplier-request-form .error-message {
+    color: #dc3545;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+} 
