@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Nav from "../Nav/NavSanooda";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaBox, FaPlus, FaSave } from 'react-icons/fa';
+import { FaBox, FaPlus, FaSave } from "react-icons/fa";
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function AddProduct() {
 
   const sendRequest = async () => {
     return axios
-      .post("http://localhost:8070/product/add", {
+      .post("http://localhost:8070/supplier-product/add", {
         Product_name: inputs.Product_name.trim(),
         quantity: parseInt(inputs.quantity) || 0,
         price: parseFloat(inputs.price) || 0,
@@ -43,11 +43,13 @@ function AddProduct() {
   return (
     <div className="page-wrapper">
       <Nav />
-      
+
       <div className="add-product-page">
         <div className="add-product-container">
           <div className="add-product-header">
-            <h1><FaPlus className="header-icon" /> Add New Product</h1>
+            <h1>
+              <FaPlus className="header-icon" /> Add New Product
+            </h1>
             <p>Enter the details of the product you want to add to inventory</p>
           </div>
 
@@ -101,7 +103,11 @@ function AddProduct() {
             </div>
 
             <div className="form-actions">
-              <button type="button" className="cancel-button" onClick={() => navigate('/productdetails')}>
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={() => navigate("/productdetails")}
+              >
                 Cancel
               </button>
               <button type="submit" className="submit-button">

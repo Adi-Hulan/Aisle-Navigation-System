@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { 
-  FaEdit, 
-  FaTrash, 
-  FaSave, 
-  FaTimes, 
-  FaBox, 
-  FaWarehouse, 
+import {
+  FaEdit,
+  FaTrash,
+  FaSave,
+  FaTimes,
+  FaBox,
+  FaWarehouse,
   FaExclamationTriangle,
   FaChartLine,
   FaCalendarAlt,
   FaBoxes,
   FaArrowUp,
-  FaArrowDown
+  FaArrowDown,
 } from "react-icons/fa";
-import '../Asiri.css';
+import "../Asiri.css";
 
 function ProductCard({ product, onUpdate, onDelete }) {
   const {
@@ -33,7 +33,11 @@ function ProductCard({ product, onUpdate, onDelete }) {
     quantity,
     min_qty,
     max_qty,
-    shelf_id,
+    location: product.location || {
+      aisle_number: 1,
+      shelf_number: 1,
+      row_number: 1,
+    },
   });
   const navigate = useNavigate();
 
@@ -42,13 +46,23 @@ function ProductCard({ product, onUpdate, onDelete }) {
   const minqty = formData.min_qty;
   const low = qty < minqty;
   const stockPercentage = (qty / max_qty) * 100;
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name.startsWith("location.")) {
+      const locationField = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        location: {
+          ...prev.location,
+          [locationField]: Number(value),
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleUpdate = async () => {
@@ -88,7 +102,7 @@ function ProductCard({ product, onUpdate, onDelete }) {
   };
 
   return (
-    <div className={`product-card ${low ? 'low-stock' : ''}`}>
+    <div className={`product-card ${low ? "low-stock" : ""}`}>
       <div className="product-card-header">
         <div className="product-title">
           <FaBox className="product-icon" />
@@ -105,17 +119,47 @@ function ProductCard({ product, onUpdate, onDelete }) {
       {isEditing ? (
         <div className="product-card-edit">
           <div className="edit-form">
+            {" "}
             <div className="form-group">
               <label>
                 <FaWarehouse className="input-icon" />
-                Shelf Location
+                Aisle Number
               </label>
               <input
-                type="text"
-                name="shelf_id"
-                value={formData.shelf_id}
+                type="number"
+                name="location.aisle_number"
+                value={formData.location.aisle_number}
                 onChange={handleInputChange}
-                placeholder="Enter shelf location"
+                min="1"
+                placeholder="Enter aisle number"
+              />
+            </div>
+            <div className="form-group">
+              <label>
+                <FaWarehouse className="input-icon" />
+                Shelf Number
+              </label>
+              <input
+                type="number"
+                name="location.shelf_number"
+                value={formData.location.shelf_number}
+                onChange={handleInputChange}
+                min="1"
+                placeholder="Enter shelf number"
+              />
+            </div>
+            <div className="form-group">
+              <label>
+                <FaWarehouse className="input-icon" />
+                Row Number
+              </label>
+              <input
+                type="number"
+                name="location.row_number"
+                value={formData.location.row_number}
+                onChange={handleInputChange}
+                min="1"
+                placeholder="Enter row number"
               />
             </div>
             <div className="form-group">
@@ -176,20 +220,27 @@ function ProductCard({ product, onUpdate, onDelete }) {
             <div className="stock-level">
               <div className="stock-header">
                 <span className="stock-label">Stock Level</span>
-                <span className="stock-value">{quantity} / {max_qty}</span>
+                <span className="stock-value">
+                  {quantity} / {max_qty}
+                </span>
               </div>
               <div className="stock-bar">
-                <div 
-                  className="stock-fill" 
+                <div
+                  className="stock-fill"
                   style={{ width: `${stockPercentage}%` }}
                 />
               </div>
-              <span className="stock-percentage">{stockPercentage.toFixed(0)}%</span>
+              <span className="stock-percentage">
+                {stockPercentage.toFixed(0)}%
+              </span>
             </div>
-            
             <div className="location-info">
               <FaWarehouse className="location-icon" />
-              <span className="location-text">{shelf_id}</span>
+              <span className="location-text">
+                Aisle {product.location?.aisle_number || "-"}, Shelf{" "}
+                {product.location?.shelf_number || "-"}, Row{" "}
+                {product.location?.row_number || "-"}
+              </span>
             </div>
           </div>
 

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 function GuestNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { user, dispatch } = useAuthContext();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -14,6 +17,11 @@ function GuestNav() {
     e.preventDefault();
     // Implement search functionality
     console.log("Searching for:", searchQuery);
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
   };
 
   return (
@@ -39,10 +47,18 @@ function GuestNav() {
 
         {/* Navigation Links */}
         <div className={`nav-links ${isMenuOpen ? "active" : ""}`}>
-          <Link to="/categories/fruits" className="nav-link">Fruits</Link>
-          <Link to="/categories/vegetables" className="nav-link">Vegetables</Link>
-          <Link to="/categories/dairy" className="nav-link">Dairy</Link>
-          <Link to="/categories/bakery" className="nav-link">Bakery</Link>
+          <Link to="/categories/fruits" className="nav-link">
+            Fruits
+          </Link>
+          <Link to="/categories/vegetables" className="nav-link">
+            Vegetables
+          </Link>
+          <Link to="/categories/dairy" className="nav-link">
+            Dairy
+          </Link>
+          <Link to="/categories/bakery" className="nav-link">
+            Bakery
+          </Link>
         </div>
 
         {/* Auth Buttons and Cart */}
@@ -52,8 +68,20 @@ function GuestNav() {
             <span className="cart-count">0</span>
           </Link>
           <div className="nav-auth">
-            <Link to="/User/login" className="nav-login">Login</Link>
-            <Link to="/User/register" className="nav-register">Register</Link>
+            {user ? (
+              <button onClick={handleLogout} className="nav-logout">
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/User/login" className="nav-login">
+                  Login
+                </Link>
+                <Link to="/User/register" className="nav-register">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
 

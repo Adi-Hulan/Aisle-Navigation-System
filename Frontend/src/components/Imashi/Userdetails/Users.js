@@ -2,20 +2,35 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import User from "../User/User";
 import Nav from "../Nav/NavImashi";
-import { FaUserPlus, FaTimes, FaUsers, FaSpinner, FaUserCircle, FaEnvelope, FaPhone, FaBriefcase, FaMoneyBillWave, FaMapMarkerAlt, FaMap } from "react-icons/fa";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import {
+  FaUserPlus,
+  FaTimes,
+  FaUsers,
+  FaSpinner,
+  FaUserCircle,
+  FaEnvelope,
+  FaPhone,
+  FaBriefcase,
+  FaMoneyBillWave,
+  FaMapMarkerAlt,
+  FaMap,
+} from "react-icons/fa";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { toast, ToastContainer } from "react-toastify";
-import '../Imashi.css';
+import "../Imashi.css";
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 function Users() {
@@ -31,9 +46,9 @@ function Users() {
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
-    managers: 0
+    managers: 0,
   });
-  
+
   // Separate form data states for add and edit
   const [addFormData, setAddFormData] = useState({
     username: "",
@@ -44,7 +59,7 @@ function Users() {
     salary: "",
     password: "",
     confirmPassword: "",
-    role: ""
+    role: "",
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -54,7 +69,7 @@ function Users() {
     email: "",
     phone: "",
     salary: "",
-    role: ""
+    role: "",
   });
 
   const [showMapModal, setShowMapModal] = useState(false);
@@ -66,14 +81,16 @@ function Users() {
         const response = await axios.get("http://localhost:8070/users");
         const usersData = response.data.users || [];
         setUsers(usersData);
-        
+
         // Calculate stats
         setStats({
           total: usersData.length,
-          active: usersData.filter(u => u.status === 'active').length,
-          managers: usersData.filter(u => u.job_title?.toLowerCase().includes('manager')).length
+          active: usersData.filter((u) => u.status === "active").length,
+          managers: usersData.filter((u) =>
+            u.job_title?.toLowerCase().includes("manager")
+          ).length,
         });
-        
+
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -86,14 +103,14 @@ function Users() {
   const handleInputChange = (e, isEdit = false) => {
     const { name, value } = e.target;
     if (isEdit) {
-      setEditFormData(prev => ({
+      setEditFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     } else {
-      setAddFormData(prev => ({
+      setAddFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -109,7 +126,7 @@ function Users() {
       salary: "",
       password: "",
       confirmPassword: "",
-      role: ""
+      role: "",
     });
     setShowAddModal(true);
   };
@@ -123,14 +140,14 @@ function Users() {
       email: user.email,
       phone: user.phone || "",
       salary: user.salary,
-      role: user.job_title
+      role: user.job_title,
     });
     setShowEditModal(true);
   };
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate passwords match
     if (addFormData.password !== addFormData.confirmPassword) {
       toast.error("Passwords do not match");
@@ -138,11 +155,21 @@ function Users() {
     }
 
     // Validate required fields
-    const requiredFields = ['username', 'firstName', 'lastName', 'email', 'salary', 'role', 'password'];
-    const missingFields = requiredFields.filter(field => !addFormData[field]);
-    
+    const requiredFields = [
+      "username",
+      "firstName",
+      "lastName",
+      "email",
+      "salary",
+      "role",
+      "password",
+    ];
+    const missingFields = requiredFields.filter((field) => !addFormData[field]);
+
     if (missingFields.length > 0) {
-      toast.error(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      toast.error(
+        `Please fill in all required fields: ${missingFields.join(", ")}`
+      );
       return;
     }
 
@@ -174,12 +201,15 @@ function Users() {
           autoClose: 2000,
           onClose: () => {
             window.location.reload();
-          }
+          },
         });
       }
     } catch (error) {
-      console.error('Error details:', error.response?.data);
-      toast.error(error.response?.data?.message || "Error adding user. Please check all fields and try again.");
+      console.error("Error details:", error.response?.data);
+      toast.error(
+        error.response?.data?.message ||
+          "Error adding user. Please check all fields and try again."
+      );
     }
   };
 
@@ -211,7 +241,7 @@ function Users() {
           autoClose: 2000,
           onClose: () => {
             window.location.reload();
-          }
+          },
         });
       }
     } catch (error) {
@@ -225,7 +255,7 @@ function Users() {
         lat: user.location.latitude,
         lng: user.location.longitude,
         name: `${user.firstName} ${user.lastName}`,
-        lastUpdated: user.location.lastUpdated
+        lastUpdated: user.location.lastUpdated,
       });
       setShowMapModal(true);
     } else {
@@ -233,15 +263,46 @@ function Users() {
     }
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
+  const handleDelete = async () => {
+    if (
+      !selectedUser ||
+      !window.confirm("Are you sure you want to delete this employee?")
+    ) {
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `http://localhost:8070/users/delete/${selectedUser._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      setShowEditModal(false);
+      toast.success("Employee deleted successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        onClose: () => {
+          window.location.reload();
+        },
+      });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error deleting employee");
+    }
+  };
+
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
       user.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.username?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesRole = roleFilter === "" || user.job_title === roleFilter;
-    
+
     return matchesSearch && matchesRole;
   });
 
@@ -279,10 +340,12 @@ function Users() {
       <div className="imashi-container">
         <div className="imashi-dashboard-header">
           <div className="imashi-header-content">
-            <h1><FaUsers className="imashi-header-icon" /> Employee Dashboard</h1>
+            <h1>
+              <FaUsers className="imashi-header-icon" /> Employee Dashboard
+            </h1>
             <p>Manage and monitor your team members</p>
           </div>
-          <button 
+          <button
             className="imashi-btn imashi-btn-primary"
             onClick={handleAddClick}
           >
@@ -325,9 +388,9 @@ function Users() {
             <h2>Employee Directory</h2>
             <div className="imashi-search-filter-container">
               <div className="imashi-search-box">
-                <input 
-                  type="text" 
-                  placeholder="Search employees..." 
+                <input
+                  type="text"
+                  placeholder="Search employees..."
                   className="imashi-search-input"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -356,10 +419,13 @@ function Users() {
                 <div key={user._id} className="imashi-user-card">
                   <div className="imashi-user-card-header">
                     <div className="imashi-user-avatar">
-                      {user.firstName?.[0]}{user.lastName?.[0]}
+                      {user.firstName?.[0]}
+                      {user.lastName?.[0]}
                     </div>
                     <div className="imashi-user-info">
-                      <h3>{user.firstName} {user.lastName}</h3>
+                      <h3>
+                        {user.firstName} {user.lastName}
+                      </h3>
                       <span className="imashi-user-role">{user.job_title}</span>
                     </div>
                   </div>
@@ -382,10 +448,20 @@ function Users() {
                       <div className="imashi-user-detail">
                         <FaMapMarkerAlt />
                         <span>
-                          {user.location.latitude?.toFixed(4)}, {user.location.longitude?.toFixed(4)}
+                          {user.location.latitude?.toFixed(4)},{" "}
+                          {user.location.longitude?.toFixed(4)}
                           {user.location.lastUpdated && (
-                            <small style={{ display: 'block', fontSize: '0.8em', color: '#666' }}>
-                              Last updated: {new Date(user.location.lastUpdated).toLocaleString()}
+                            <small
+                              style={{
+                                display: "block",
+                                fontSize: "0.8em",
+                                color: "#666",
+                              }}
+                            >
+                              Last updated:{" "}
+                              {new Date(
+                                user.location.lastUpdated
+                              ).toLocaleString()}
                             </small>
                           )}
                         </span>
@@ -394,14 +470,14 @@ function Users() {
                   </div>
                   <div className="imashi-user-actions">
                     {user.location && (
-                      <button 
+                      <button
                         className="imashi-btn imashi-btn-secondary"
                         onClick={() => handleViewLocation(user)}
                       >
                         <FaMap /> View on Map
                       </button>
                     )}
-                    <button 
+                    <button
                       className="imashi-btn imashi-btn-primary"
                       onClick={() => handleEditClick(user)}
                     >
@@ -423,7 +499,7 @@ function Users() {
       {showAddModal && (
         <div className="imashi-modal-overlay">
           <div className="imashi-modal-content">
-            <button 
+            <button
               className="imashi-modal-close"
               onClick={() => setShowAddModal(false)}
             >
@@ -431,7 +507,7 @@ function Users() {
             </button>
             <form onSubmit={handleAddSubmit} className="imashi-form">
               <h3 className="imashi-form-title">Add New Employee</h3>
-              
+
               <div className="imashi-form-group">
                 <label className="imashi-form-label">Username*</label>
                 <input
@@ -565,7 +641,7 @@ function Users() {
       {showEditModal && (
         <div className="imashi-modal-overlay">
           <div className="imashi-modal-content">
-            <button 
+            <button
               className="imashi-modal-close"
               onClick={() => setShowEditModal(false)}
             >
@@ -573,7 +649,7 @@ function Users() {
             </button>
             <form onSubmit={handleEditSubmit} className="imashi-form">
               <h3 className="imashi-form-title">Edit Employee</h3>
-              
+
               <div className="imashi-form-group">
                 <label className="imashi-form-label">Username*</label>
                 <input
@@ -657,16 +733,44 @@ function Users() {
                 />
               </div>
 
-              <div className="imashi-form-actions">
+              <div
+                className="imashi-form-actions"
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  justifyContent: "flex-end",
+                }}
+              >
                 <button
                   type="button"
                   className="imashi-btn imashi-btn-secondary"
                   onClick={() => setShowEditModal(false)}
+                  style={{ padding: "6px 12px", fontSize: "14px" }}
                 >
                   Cancel
                 </button>
-                <button type="submit" className="imashi-btn imashi-btn-primary">
-                  Save Changes
+                <button
+                  type="submit"
+                  className="imashi-btn imashi-btn-primary"
+                  style={{ padding: "6px 12px", fontSize: "14px" }}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="imashi-btn"
+                  onClick={handleDelete}
+                  style={{
+                    padding: "6px 12px",
+                    fontSize: "14px",
+                    backgroundColor: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Delete
                 </button>
               </div>
             </form>
@@ -676,19 +780,24 @@ function Users() {
 
       {showMapModal && selectedLocation && (
         <div className="imashi-modal-overlay">
-          <div className="imashi-modal-content" style={{ width: '80%', maxWidth: '800px', height: '80vh' }}>
-            <button 
+          <div
+            className="imashi-modal-content"
+            style={{ width: "80%", maxWidth: "800px", height: "80vh" }}
+          >
+            <button
               className="imashi-modal-close"
               onClick={() => setShowMapModal(false)}
             >
               <FaTimes />
             </button>
             <h3 className="imashi-form-title">Location Map</h3>
-            <div style={{ height: '100%', width: '100%', position: 'relative' }}>
-              <MapContainer 
-                center={[selectedLocation.lat, selectedLocation.lng]} 
-                zoom={13} 
-                style={{ height: '100%', width: '100%' }}
+            <div
+              style={{ height: "100%", width: "100%", position: "relative" }}
+            >
+              <MapContainer
+                center={[selectedLocation.lat, selectedLocation.lng]}
+                zoom={13}
+                style={{ height: "100%", width: "100%" }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -699,7 +808,8 @@ function Users() {
                     <div>
                       <strong>{selectedLocation.name}</strong>
                       <br />
-                      Last updated: {new Date(selectedLocation.lastUpdated).toLocaleString()}
+                      Last updated:{" "}
+                      {new Date(selectedLocation.lastUpdated).toLocaleString()}
                     </div>
                   </Popup>
                 </Marker>

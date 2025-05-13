@@ -16,6 +16,7 @@ export default function AddProduct() {
     supplier_id: "",
     exp_date: "",
     promotions: "",
+    image_url: "", // Add image_url to initial state
   });
 
   const [categories, setCategories] = useState([]);
@@ -84,6 +85,7 @@ export default function AddProduct() {
         unit_price: parseFloat(inputs.unit_price),
         supplier_id: String(inputs.supplier_id || ""),
         exp_date: String(inputs.exp_date),
+        image_url: String(inputs.image_url || ""),
       };
 
       console.log("Request payload:", JSON.stringify(payload, null, 2));
@@ -156,6 +158,21 @@ export default function AddProduct() {
             name="description"
             value={inputs.description}
             placeholder="Enter Description"
+          />
+        </div>
+
+        <div className="mb-3 full-width">
+          <label htmlFor="image_url" className="form-label">
+            Product Image URL
+          </label>
+          <input
+            type="url"
+            className="form-control"
+            id="image_url"
+            onChange={handleChange}
+            name="image_url"
+            value={inputs.image_url}
+            placeholder="Enter image URL (http:// or https://)"
           />
         </div>
 
