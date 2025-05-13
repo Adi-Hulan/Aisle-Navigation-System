@@ -51,9 +51,9 @@ const getById = async (req, res) => {
   try {
     const id = req.params.id; // Retrieve the product ID from the URL params
     const product = await Product.findById(id)
-      .populate('cat_id') // Populate the category data
-      .populate('supplier_id'); // Populate the supplier data
-    
+      .populate("cat_id") // Populate the category data
+      .populate("supplier_id"); // Populate the supplier data
+
     if (!product) {
       return res
         .status(404)
@@ -81,6 +81,7 @@ const addProduct = async (req, res, next) => {
       unit_price,
       supplier_id,
       exp_date,
+      image_url,
     } = req.body;
 
     //validate required fields
@@ -111,6 +112,7 @@ const addProduct = async (req, res, next) => {
       is_active: true,
       supplier_id: supplier_id || null,
       exp_date: exp_date,
+      image_url: image_url || "", // Add default empty string if no image URL provided
     });
 
     //save product
@@ -151,6 +153,7 @@ const updateProduct = async (req, res, next) => {
       supplier_id,
       exp_date,
       promotions,
+      image_url,
     } = req.body;
 
     // Check if the product exists
@@ -168,6 +171,7 @@ const updateProduct = async (req, res, next) => {
     product.is_active = is_active !== undefined ? is_active : product.is_active;
     product.supplier_id = supplier_id || product.supplier_id;
     product.exp_date = exp_date || product.exp_date;
+    product.image_url = image_url || product.image_url; // Update image URL if provided
 
     // Validate and update promotions
     if (promotions && promotions.length > 0) {

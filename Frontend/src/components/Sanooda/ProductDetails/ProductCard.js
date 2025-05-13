@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
-import './ProductCard.css';
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
+import "./ProductCard.css";
 
 const ProductCard = ({ product, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -32,16 +32,16 @@ const ProductCard = ({ product, onUpdate, onDelete }) => {
         <div className="product-card-edit">
           <input
             type="text"
-            name="pr_name"
-            value={editedProduct.pr_name}
+            name="Product_name"
+            value={editedProduct.Product_name}
             onChange={handleChange}
             className="product-input"
             placeholder="Product Name"
           />
           <input
             type="number"
-            name="unit_price"
-            value={editedProduct.unit_price}
+            name="price"
+            value={editedProduct.price}
             onChange={handleChange}
             className="product-input"
             placeholder="Price"
@@ -65,14 +65,19 @@ const ProductCard = ({ product, onUpdate, onDelete }) => {
         </div>
       ) : (
         <div className="product-card-content">
-          <h3 className="product-name">{product.pr_name || "Unnamed Product"}</h3>
+          <h3 className="product-name">
+            {product.Product_name || "Unnamed Product"}
+          </h3>
           <div className="product-details">
             <p className="product-id">ID: {product._id?.slice(-6) || "N/A"}</p>
-            <p className="product-price">Rs. {product.unit_price || "N/A"}</p>
-            <p className="product-quantity">Quantity: {product.quantity || "N/A"}</p>
+            <p className="product-price">Rs. {product.price || "N/A"}</p>
+            <p className="product-quantity">
+              Quantity: {product.quantity || "N/A"}
+            </p>
             <p className="product-date">
-              Added: {product.added_on
-                ? new Date(product.added_on).toLocaleDateString("en-US", {
+              Added:{" "}
+              {product.last_update
+                ? new Date(product.last_update).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",

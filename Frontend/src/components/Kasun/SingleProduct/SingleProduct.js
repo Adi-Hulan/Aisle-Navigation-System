@@ -1,8 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import GuestNav from '../GuestNav/GuestNav';
-import './SingleProduct.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import GuestNav from "../GuestNav/GuestNav";
+import "./SingleProduct.css";
+
+// Add styles for product image
+const productImageStyles = {
+  imageSection: {
+    width: "100%",
+    maxWidth: "500px",
+    aspectRatio: "1",
+    position: "relative",
+    overflow: "hidden",
+    borderRadius: "12px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    backgroundColor: "#f5f5f5",
+  },
+};
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -11,7 +30,8 @@ const SingleProduct = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const storeLocation = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.3413596598095!2d80.63225916956782!3d7.312780199543449!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae367bf37188fd7%3A0xb094b76523d338be!2sKeells%203%20-%20Mahiyawa%20%7C%20Kandy!5e0!3m2!1sen!2slk!4v1746962608993!5m2!1sen!2slk";
+  const storeLocation =
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.3413596598095!2d80.63225916956782!3d7.312780199543449!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae367bf37188fd7%3A0xb094b76523d338be!2sKeells%203%20-%20Mahiyawa%20%7C%20Kandy!5e0!3m2!1sen!2slk!4v1746962608993!5m2!1sen!2slk";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -20,12 +40,14 @@ const SingleProduct = () => {
         if (response.data.success && response.data.product) {
           setProduct(response.data.product);
         } else {
-          setError('Failed to fetch product details');
+          setError("Failed to fetch product details");
         }
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching product:', err);
-        setError(err.response?.data?.message || 'Failed to fetch product details');
+        console.error("Error fetching product:", err);
+        setError(
+          err.response?.data?.message || "Failed to fetch product details"
+        );
         setLoading(false);
       }
     };
@@ -42,19 +64,19 @@ const SingleProduct = () => {
 
   const handleAddToCart = () => {
     // TODO: Implement add to cart functionality
-    console.log('Adding to cart:', { product, quantity });
+    console.log("Adding to cart:", { product, quantity });
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
     } catch (err) {
-      console.error('Error formatting date:', err);
+      console.error("Error formatting date:", err);
       return "Invalid Date";
     }
   };
@@ -66,10 +88,25 @@ const SingleProduct = () => {
   return (
     <div className="single-product-page">
       <GuestNav />
-      
+
       <div className="product-container">
-        <div className="product-image-section">
-          <img src={product.image} alt={product.pr_name} className="product-image" />
+        <div
+          className="product-image-section"
+          style={productImageStyles.imageSection}
+        >
+          <img
+            src={
+              product.image_url ||
+              "https://cnopt.tn/wp-content/uploads/2023/06/default-image.jpg"
+            }
+            alt={product.pr_name}
+            style={productImageStyles.image}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src =
+                "https://cnopt.tn/wp-content/uploads/2023/06/default-image.jpg";
+            }}
+          />
           {product.promotions && product.promotions.length > 0 && (
             <div className="promotion-badge">{product.promotions[0]}</div>
           )}
@@ -77,11 +114,13 @@ const SingleProduct = () => {
 
         <div className="product-details-section">
           <h1 className="product-name">{product.pr_name}</h1>
-          
+
           <div className="product-price">
             <span className="price">Rs. {product.unit_price?.toFixed(2)}</span>
             {product.originalPrice && (
-              <span className="original-price">Rs. {product.originalPrice.toFixed(2)}</span>
+              <span className="original-price">
+                Rs. {product.originalPrice.toFixed(2)}
+              </span>
             )}
           </div>
 
@@ -93,7 +132,9 @@ const SingleProduct = () => {
           <div className="product-meta">
             <div className="meta-item">
               <span className="label">Category:</span>
-              <span className="value">{product.cat_id?.cat_name || "Uncategorized"}</span>
+              <span className="value">
+                {product.cat_id?.cat_name || "Uncategorized"}
+              </span>
             </div>
             <div className="meta-item">
               <span className="label">Stock:</span>
@@ -114,15 +155,17 @@ const SingleProduct = () => {
             {product.supplier_id && (
               <div className="meta-item">
                 <span className="label">Supplier:</span>
-                <span className="value">{product.supplier_id.supplier_name || "N/A"}</span>
+                <span className="value">
+                  {product.supplier_id.supplier_name || "N/A"}
+                </span>
               </div>
             )}
           </div>
 
           <div className="product-actions">
             <div className="quantity-selector">
-              <button 
-                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+              <button
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                 disabled={quantity <= 1}
               >
                 -
@@ -134,20 +177,22 @@ const SingleProduct = () => {
                 min="1"
                 max={product.stock || 0}
               />
-              <button 
-                onClick={() => setQuantity(prev => Math.min(product.stock || 0, prev + 1))}
+              <button
+                onClick={() =>
+                  setQuantity((prev) => Math.min(product.stock || 0, prev + 1))
+                }
                 disabled={quantity >= (product.stock || 0)}
               >
                 +
               </button>
             </div>
 
-            <button 
+            <button
               className="add-to-cart-btn"
               onClick={handleAddToCart}
               disabled={!product.stock || product.stock === 0}
             >
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+              {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
             </button>
           </div>
 
@@ -189,4 +234,4 @@ const SingleProduct = () => {
   );
 };
 
-export default SingleProduct; 
+export default SingleProduct;

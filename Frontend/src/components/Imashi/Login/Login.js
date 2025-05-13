@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
 function Login() {
-  const {dispatch} = useAuthContext()
+  const { dispatch } = useAuthContext();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -23,13 +23,13 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-  
+
     try {
       const response = await axios.post(
         "http://localhost:8070/users/login",
         credentials
       );
-  
+
       if (response.status < 200 || response.status >= 300) {
         setError(response.data?.error || "Login failed. Please try again.");
         return;
@@ -38,21 +38,21 @@ function Login() {
       dispatch({ type: "LOGIN", payload: response.data.user });
 
       const userRole = response.data.user?.role;
-      
-      switch(userRole) {
-        case 'admin':
+
+      switch (userRole) {
+        case "admin":
           navigate("/User/userdetails");
           break;
-        case 'stockManager':
+        case "stockManager":
           navigate("/stock/StockManagerDash");
           break;
-        case 'inventoryManager':
+        case "inventoryManager":
           navigate("/inventory/inventorydashboard");
           break;
-        case 'customer':
-          navigate("/website/home");
+        case "customer":
+          navigate("/");
           break;
-        case 'supplier':
+        case "supplier":
           navigate("/supplier/supplierhome");
           break;
         default:
@@ -60,7 +60,8 @@ function Login() {
       }
     } catch (error) {
       setError(
-        error.response?.data?.error || "An error occurred. Please try again later."
+        error.response?.data?.error ||
+          "An error occurred. Please try again later."
       );
     }
   };
@@ -70,10 +71,12 @@ function Login() {
       <div className="login-card-modern">
         <div className="login-form-side">
           <h1>Welcome Back</h1>
-          <div className="login-form-subtitle">Please enter your details to sign in</div>
-          
+          <div className="login-form-subtitle">
+            Please enter your details to sign in
+          </div>
+
           {error && <div className="login-alert-danger">{error}</div>}
-          
+
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="email" className="login-form-label">
@@ -116,8 +119,17 @@ function Login() {
               </div>
             </div>
 
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
-              <a href="#" className="login-forgot">Forgot password?</a>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <a href="#" className="login-forgot">
+                Forgot password?
+              </a>
             </div>
 
             <button type="submit" className="login-btn-primary">
@@ -131,9 +143,9 @@ function Login() {
           </form>
         </div>
         <div className="login-image-side">
-          <img 
-            src="https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-            alt="Shopping experience" 
+          <img
+            src="https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Shopping experience"
           />
         </div>
       </div>

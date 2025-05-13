@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../Nav/NavSanooda";
 import axios from "axios";
-import { FaBox, FaSearch, FaPlus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaBox, FaSearch, FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 
-const URL = "http://localhost:8070/product";
+const URL = "http://localhost:8070/supplier-product";
 
 const fetchProducts = async () => {
   try {
@@ -38,10 +38,14 @@ function ProductDetails() {
 
     getProducts();
   }, []);
-
   const handleUpdate = async (updatedProduct) => {
     try {
       const { _id, Product_name, quantity, price } = updatedProduct;
+      console.log("Updating product with data:", {
+        Product_name,
+        quantity,
+        price,
+      }); // Debug log
 
       const response = await axios.put(`${URL}/${_id}`, {
         Product_name,
@@ -82,10 +86,13 @@ function ProductDetails() {
     setSearchQuery(query);
   };
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = products.filter((product) => {
     console.log("Filtering product:", product); // Debug log
-    return product && product.pr_name && 
-           product.pr_name.toLowerCase().includes(searchQuery.toLowerCase());
+    return (
+      product &&
+      product.Product_name &&
+      product.Product_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   });
 
   console.log("Filtered products:", filteredProducts); // Debug log
@@ -93,17 +100,19 @@ function ProductDetails() {
   return (
     <div className="page-wrapper">
       <Nav />
-      
+
       <div className="products-page">
         <div className="products-container">
           <div className="section-header">
             <div className="header-content">
-              <h1><FaBox className="header-icon" /> Product Details</h1>
+              <h1>
+                <FaBox className="header-icon" /> Product Details
+              </h1>
               <p>Manage your product inventory</p>
             </div>
-            <button 
+            <button
               className="add-product-btn"
-              onClick={() => navigate('/addproduct')}
+              onClick={() => navigate("/addproduct")}
             >
               <FaPlus className="button-icon" /> Add New Product
             </button>
@@ -150,7 +159,7 @@ function ProductDetails() {
             <div className="no-results">
               <p>No products found.</p>
               {searchQuery && (
-                <button 
+                <button
                   className="view-all-btn"
                   onClick={() => setSearchQuery("")}
                 >

@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import InventoryPage from "./components/Udayanga/InventoryPage/InventoryPage";
 import ProductDetails from "./components/Udayanga/ProductDetails";
+import stockReq from "./components/Udayanga/StockRequests";
+import SupplierReq from "./components/Udayanga/SupplierReq";
 import AddProductToInventory from "./components/Udayanga/InventoryAddProductToInventory/AddProductToInventory";
 
 //kasun
@@ -29,6 +31,7 @@ import SingleProduct from "./components/Kasun/SingleProduct/SingleProduct";
 //asiri
 import StockManagerDash from "./components/Asiri/StockManagerDash/StockManagerDash";
 import StockRequest from "./components/Asiri/StockRequest/StockRequest";
+import RequestStock from "./components/Asiri/RequestStock";
 
 //Imashi
 import NavImashi from "./components/Imashi/Nav/NavImashi";
@@ -93,7 +96,8 @@ function App() {
             exact
             Component={ProductDetails}
           />
-
+          <Route path="/inventory/stockReq" exact Component={stockReq} />
+          <Route path="/inventory/supReq" exact Component={SupplierReq} />
           <Route path="/inventory/add" exact Component={AddProduct} />
 
           {/*Kasun*/}
@@ -118,6 +122,7 @@ function App() {
             element={<StockManagerDash />}
           />
           <Route path="/stock/StockRequest" element={<StockRequest />} />
+          <Route path="/stock/request" element={<RequestStock />} />
 
           {/*Imashi*/}
           <Route path="/User/register" element={<Register />} />

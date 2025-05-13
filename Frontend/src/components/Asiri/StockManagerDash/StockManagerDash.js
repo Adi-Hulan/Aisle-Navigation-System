@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import Nav from "../Nav/NavAsiri";
 import axios from "axios";
 import ProductCard from "../Products/ProductCard";
-import { FaPlus, FaBox, FaExclamationTriangle, FaTimes, FaSearch } from "react-icons/fa";
-import '../Asiri.css';
+import {
+  FaPlus,
+  FaBox,
+  FaExclamationTriangle,
+  FaTimes,
+  FaSearch,
+} from "react-icons/fa";
+import "../Asiri.css";
 
 const fetchHandler = async () => {
   try {
     const response = await axios.get("http://localhost:8070/stock/get");
+    console.log("Fetched products:", response.data);
     return response.data;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);
@@ -33,20 +40,52 @@ const Modal = ({ isOpen, onClose, children }) => {
 
 // Add Product Form Component
 const AddProductForm = ({ onCancel, onSuccess }) => {
+  const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     product_id: "",
-    shelf_id: "",
     quantity: 0,
     min_qty: 0,
     max_qty: 1000,
+    location: {
+      aisle_number: 1,
+      shelf_number: 1,
+      row_number: 1,
+    },
   });
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8070/product");
+        // Make sure we're getting the array of products from the response
+        const productsArray = response.data.products || response.data || [];
+        console.log("Fetched products:", productsArray);
+        setProducts(Array.isArray(productsArray) ? productsArray : []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        alert("Failed to load products list");
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name.startsWith("location.")) {
+      const locationField = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        location: {
+          ...prev.location,
+          [locationField]: Number(value),
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -68,30 +107,62 @@ const AddProductForm = ({ onCancel, onSuccess }) => {
     <div className="add-product-form">
       <h3>Add New Product to Stock</h3>
       <form onSubmit={handleSubmit}>
+        {" "}
         <div className="form-group">
-          <label>Product ID:</label>
-          <input
-            type="text"
+          <label>Select Product:</label>
+          <select
             name="product_id"
             value={formData.product_id}
             onChange={handleInputChange}
             required
             className="form-control"
-          />
-        </div>
-
+          >
+            <option value="">Select a product...</option>{" "}
+            {Array.isArray(products) &&
+              products.map((product) => (
+                <option key={product._id} value={product._id}>
+                  {product.pr_name || "Unnamed Product"} -{" "}
+                  {product._id || "No Code"}
+                </option>
+              ))}
+          </select>
+        </div>{" "}
         <div className="form-group">
-          <label>Shelf Location:</label>
+          <label>Aisle Number:</label>
           <input
-            type="text"
-            name="shelf_id"
-            value={formData.shelf_id}
+            type="number"
+            name="location.aisle_number"
+            value={formData.location.aisle_number}
             onChange={handleInputChange}
             required
+            min="1"
             className="form-control"
           />
         </div>
-
+        <div className="form-group">
+          <label>Shelf Number:</label>
+          <input
+            type="number"
+            name="location.shelf_number"
+            value={formData.location.shelf_number}
+            onChange={handleInputChange}
+            required
+            min="1"
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label>Row Number:</label>
+          <input
+            type="number"
+            name="location.row_number"
+            value={formData.location.row_number}
+            onChange={handleInputChange}
+            required
+            min="1"
+            className="form-control"
+          />
+        </div>
         <div className="form-group">
           <label>Quantity:</label>
           <input
@@ -104,7 +175,6 @@ const AddProductForm = ({ onCancel, onSuccess }) => {
             className="form-control"
           />
         </div>
-
         <div className="form-group">
           <label>Minimum Quantity:</label>
           <input
@@ -116,7 +186,6 @@ const AddProductForm = ({ onCancel, onSuccess }) => {
             className="form-control"
           />
         </div>
-
         <div className="form-group">
           <label>Maximum Quantity:</label>
           <input
@@ -128,7 +197,6 @@ const AddProductForm = ({ onCancel, onSuccess }) => {
             className="form-control"
           />
         </div>
-
         <div className="form-actions">
           <button type="button" onClick={onCancel} className="btn-cancel">
             Cancel
@@ -166,10 +234,14 @@ function StockManagerDash() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const filteredProducts = products.filter(product =>
-    String(product.product_id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    String(product.shelf_id || '').toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      String(product.product_id || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      String(product.location?.aisle_number || "").includes(searchTerm) ||
+      String(product.location?.shelf_number || "").includes(searchTerm) ||
+      String(product.location?.row_number || "").includes(searchTerm)
   );
 
   if (loading) {
@@ -222,7 +294,7 @@ function StockManagerDash() {
               <FaExclamationTriangle />
               <div className="stat-info">
                 <h3>Low Stock Items</h3>
-                <p>{products.filter(p => p.quantity <= p.min_qty).length}</p>
+                <p>{products.filter((p) => p.quantity <= p.min_qty).length}</p>
               </div>
             </div>
           </div>

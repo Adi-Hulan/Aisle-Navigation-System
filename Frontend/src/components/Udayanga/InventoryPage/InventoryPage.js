@@ -2,8 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Nav from "../InventoryHeader/InventoryHeader";
-import { FaPlus, FaSearch, FaBox, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
+import {
+  FaPlus,
+  FaSearch,
+  FaBox,
+  FaExclamationTriangle,
+  FaTimes,
+  FaFilePdf,
+} from "react-icons/fa";
 import AddProductToInventory from "../InventoryAddProductToInventory/AddProductToInventory";
+import html2pdf from "html2pdf.js";
 
 export default function InventoryPage() {
   const navigate = useNavigate();
@@ -90,7 +98,9 @@ export default function InventoryPage() {
         <div className="inv-inventory-container">
           <div className="inv-section-header">
             <div className="inv-header-content">
-              <h1><FaBox className="inv-header-icon" /> Inventory List</h1>
+              <h1>
+                <FaBox className="inv-header-icon" /> Inventory List
+              </h1>
               <p>Manage and monitor your inventory items</p>
             </div>
           </div>
@@ -144,7 +154,31 @@ export default function InventoryPage() {
           </div>
 
           <div className="inv-inventory-section">
-            <h2 className="inv-section-title">Products in Inventory</h2>
+            <div className="inv-section-header">
+              <h2 className="inv-section-title">Products in Inventory</h2>
+              <button
+                className="inv-pdf-btn"
+                onClick={() => {
+                  const element = document.querySelector(
+                    ".inv-table-container"
+                  );
+                  const opt = {
+                    margin: 1,
+                    filename: "inventory-report.pdf",
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                      unit: "in",
+                      format: "letter",
+                      orientation: "landscape",
+                    },
+                  };
+                  html2pdf().set(opt).from(element).save();
+                }}
+              >
+                <FaFilePdf /> Generate PDF
+              </button>
+            </div>
             <div className="inv-inventory-card">
               {loading ? (
                 <div className="inv-loading-state">
@@ -173,7 +207,10 @@ export default function InventoryPage() {
                       {paginatedInventory.map((inven) => {
                         const isLowStock = inven.current_stock < inven.min_quan;
                         return (
-                          <tr key={inven._id} className={isLowStock ? "inv-low-stock" : ""}>
+                          <tr
+                            key={inven._id}
+                            className={isLowStock ? "inv-low-stock" : ""}
+                          >
                             <td>
                               <Link
                                 to={`/inventory/${inven._id}`}
@@ -194,7 +231,13 @@ export default function InventoryPage() {
                                 : "N/A"}
                             </td>
                             <td>
-                              <span className={`inv-status-badge ${isLowStock ? 'inv-status-warning' : 'inv-status-normal'}`}>
+                              <span
+                                className={`inv-status-badge ${
+                                  isLowStock
+                                    ? "inv-status-warning"
+                                    : "inv-status-normal"
+                                }`}
+                              >
                                 {isLowStock ? (
                                   <>
                                     <FaExclamationTriangle /> Low Stock
@@ -215,9 +258,9 @@ export default function InventoryPage() {
           </div>
 
           <div className="inv-pagination">
-            <button 
+            <button
               className="inv-pagination-btn"
-              onClick={handlePrevious} 
+              onClick={handlePrevious}
               disabled={currentPage === 1}
             >
               Previous

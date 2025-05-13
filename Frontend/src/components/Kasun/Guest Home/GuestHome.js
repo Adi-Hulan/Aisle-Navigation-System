@@ -2,6 +2,27 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GuestNav from "../GuestNav/GuestNav";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+
+// Add CSS styles
+const productImageStyles = {
+  productImage: {
+    width: "100%",
+    paddingBottom: "100%", // Makes it a square
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#f5f5f5",
+    borderRadius: "8px",
+  },
+  img: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover", // This ensures the image covers the square without distortion
+  },
+};
 
 const URL = "http://localhost:8070/product";
 
@@ -17,7 +38,10 @@ const HeroSection = ({ onSearch }) => {
     <section className="grocery-hero">
       <div className="hero-content">
         <h1>Fresh Groceries Delivered</h1>
-        <p>Shop from our wide selection of fresh produce, dairy, and household essentials</p>
+        <p>
+          Shop from our wide selection of fresh produce, dairy, and household
+          essentials
+        </p>
         <div className="hero-search">
           <input
             type="text"
@@ -39,7 +63,7 @@ const CategoriesSection = () => {
     { name: "Meat & Seafood", icon: "🥩", color: "#f44336" },
     { name: "Bakery", icon: "🍞", color: "#FF9800" },
     { name: "Frozen Foods", icon: "❄️", color: "#9C27B0" },
-    { name: "Household", icon: "🏠", color: "#795548" }
+    { name: "Household", icon: "🏠", color: "#795548" },
   ];
 
   return (
@@ -47,8 +71,8 @@ const CategoriesSection = () => {
       <h2>Shop by Category</h2>
       <div className="categories-grid">
         {categories.map((category, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="category-card"
             style={{ backgroundColor: category.color }}
           >
@@ -66,9 +90,14 @@ const CategoriesSection = () => {
 // Product Card Component
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
-  const formattedPrice = product.unit_price && !isNaN(product.unit_price) ? product.unit_price.toFixed(2) : "N/A";
-  const formattedExpDate = product.exp_date ? new Date(product.exp_date).toLocaleDateString() : "N/A";
-  
+  const formattedPrice =
+    product.unit_price && !isNaN(product.unit_price)
+      ? product.unit_price.toFixed(2)
+      : "N/A";
+  const formattedExpDate = product.exp_date
+    ? new Date(product.exp_date).toLocaleDateString()
+    : "N/A";
+
   const handleProductClick = () => {
     navigate(`/product/${product._id}`);
   };
@@ -78,11 +107,28 @@ const ProductCard = ({ product }) => {
     if (!product.cat_id) return "Uncategorized";
     return product.cat_id.cat_name || "Uncategorized";
   };
-  
+
   return (
-    <div className="grocery-product-card" onClick={handleProductClick} style={{ cursor: 'pointer' }}>
-      <div className="product-image">
-        <img src={product.image} alt={product.pr_name} />
+    <div
+      className="grocery-product-card"
+      onClick={handleProductClick}
+      style={{ cursor: "pointer" }}
+    >
+      {" "}
+      <div style={productImageStyles.productImage}>
+        <img
+          src={
+            product.image_url ||
+            "https://cnopt.tn/wp-content/uploads/2023/06/default-image.jpg"
+          }
+          alt={product.pr_name}
+          style={productImageStyles.img}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              "https://cnopt.tn/wp-content/uploads/2023/06/default-image.jpg";
+          }}
+        />
         {product.promotions && product.promotions.length > 0 && (
           <span className="promotion-badge">{product.promotions[0]}</span>
         )}
@@ -99,15 +145,17 @@ const ProductCard = ({ product }) => {
             <span className="price">Rs. {formattedPrice}</span>
             <span className="stock">In Stock: {product.stock || 0}</span>
           </div>
-          <button 
-            className={`add-to-cart ${product.stock > 0 ? 'available' : 'out-of-stock'}`}
+          <button
+            className={`add-to-cart ${
+              product.stock > 0 ? "available" : "out-of-stock"
+            }`}
             disabled={product.stock === 0}
             onClick={(e) => {
               e.stopPropagation(); // Prevent navigation when clicking the button
               // TODO: Implement add to cart functionality
             }}
           >
-            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </div>
@@ -145,6 +193,7 @@ const FeaturesSection = () => {
 
 // Main Component
 const GuestHome = () => {
+  const { user } = useAuthContext();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -158,10 +207,16 @@ const GuestHome = () => {
       setProducts(data);
       setFilteredProducts(data);
       // Extract unique categories properly
-      const uniqueCategories = [...new Set(data
-        .filter(product => product.cat_id && typeof product.cat_id === 'object')
-        .map(product => product.cat_id.cat_name)
-        .filter(Boolean))];
+      const uniqueCategories = [
+        ...new Set(
+          data
+            .filter(
+              (product) => product.cat_id && typeof product.cat_id === "object"
+            )
+            .map((product) => product.cat_id.cat_name)
+            .filter(Boolean)
+        ),
+      ];
       setCategories(uniqueCategories);
     });
   }, []);
@@ -181,8 +236,8 @@ const GuestHome = () => {
 
     // Apply category filter
     if (selectedCategory) {
-      filtered = filtered.filter((product) => 
-        product.cat_id?.cat_name === selectedCategory
+      filtered = filtered.filter(
+        (product) => product.cat_id?.cat_name === selectedCategory
       );
     }
 
@@ -222,75 +277,99 @@ const GuestHome = () => {
   return (
     <div className="grocery-website">
       <GuestNav />
-      
+
       <HeroSection onSearch={handleSearch} />
-      
+
       <FeaturesSection />
-      
+
       <CategoriesSection />
 
-      <section className="products-section">
-        <div className="section-header">
-          <h2>{searchQuery ? `Search Results for "${searchQuery}"` : "Featured Products"}</h2>
-          <div className="filters">
-            <select 
-              className="category-filter"
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-            >
-              <option value="">All Categories</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>{category}</option>
-              ))}
-            </select>
-            <select 
-              className="sort-filter"
-              value={sortOption}
-              onChange={handleSortChange}
-            >
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="name-asc">Name: A to Z</option>
-              <option value="name-desc">Name: Z to A</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="products-grid">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))
-          ) : (
-            <div className="no-results">
-              <p>No products found</p>
-              <button onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("");
-                setSortOption("price-asc");
-              }}>View All Products</button>
+      {user && (
+        <section className="products-section">
+          <div className="section-header">
+            <h2>
+              {searchQuery
+                ? `Search Results for "${searchQuery}"`
+                : "Featured Products"}
+            </h2>
+            <div className="filters">
+              <select
+                className="category-filter"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                <option value="">All Categories</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="sort-filter"
+                value={sortOption}
+                onChange={handleSortChange}
+              >
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+              </select>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+
+          <div className="products-grid">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <div className="no-results">
+                <p>No products found</p>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("");
+                    setSortOption("price-asc");
+                  }}
+                >
+                  View All Products
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <footer className="modern-footer">
         <div className="footer-container">
           <div className="footer-section">
             <h3>About ShelfScout</h3>
-            <p>Your trusted grocery shopping destination for quality products and excellent service. We bring fresh groceries right to your doorstep.</p>
+            <p>
+              Your trusted grocery shopping destination for quality products and
+              excellent service. We bring fresh groceries right to your
+              doorstep.
+            </p>
           </div>
-          
+
           <div className="footer-section">
             <h3>Quick Links</h3>
             <ul className="footer-links">
-              <li><Link to="/products">All Products</Link></li>
-              <li><Link to="/categories">Categories</Link></li>
-              <li><Link to="/deals">Special Deals</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
+              <li>
+                <Link to="/products">All Products</Link>
+              </li>
+              <li>
+                <Link to="/categories">Categories</Link>
+              </li>
+              <li>
+                <Link to="/deals">Special Deals</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact Us</Link>
+              </li>
             </ul>
           </div>
-          
+
           <div className="footer-section">
             <h3>Contact Info</h3>
             <ul className="contact-info">
@@ -308,7 +387,7 @@ const GuestHome = () => {
               </li>
             </ul>
           </div>
-          
+
           <div className="footer-section">
             <h3>Follow Us</h3>
             <div className="social-links">
@@ -334,7 +413,7 @@ const GuestHome = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="footer-bottom">
           <p>&copy; 2024 ShelfScout. All rights reserved.</p>
           <div className="footer-bottom-links">
